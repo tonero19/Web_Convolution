@@ -1,0 +1,244 @@
+/*---Author: Adib---*/
+
+html {
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background: #70bg32;
+    background-repeat: no-repeat;
+    background: -webkit-linear-gradient( to bottom, #a0bedc, #FFFFFF); /* For Safari 5.1 to 6.0 */
+    background: -moz-linear-gradient( to bottom, #a0bedc, #FFFFFF); /* For Firefox 3.6 to 15 */
+    background: -o-linear-gradient( to bottom, #a0bedc, #FFFFFF); /* For Opera 11.1 to 12.0 */
+    background: linear-gradient( to bottom, #a0bedc, #FFFFFF); /* Standard syntax */
+    font-size: 14px;
+    font-family: "Open Sans";
+}
+
+h1 {
+    padding: 1em calc(300px + 2em);
+    color: rgb(0, 60, 160);
+    font-size: 2.5em;
+    font-family: "Open Sans";
+}
+
+h2,
+legend {
+    font-size: 1.5em;
+}
+
+#files,
+#iFiles {
+    padding: 1px;
+    background: #fff;
+}
+
+#haw_logo {
+    padding: 0px 1em;
+    float: left;
+}
+
+
+/* ------- From visualisation.css by Anthony ------*/
+
+.jxgbox {
+    margin: 20px;
+}
+
+#jxgbox2 {
+    margin-top: 40px;
+}
+
+.formField {
+    clear: none;
+    float: left;
+    position: relative;
+    padding: 20px 50px;
+    width: 300px;
+    height: 400px;
+	/*font-family:Tahoma;
+    font-size: 11pt;*/
+}
+
+#sliderParagraph {
+    font-family: Tahoma;
+    border-color: #999691;
+    background-color: white;
+    padding: 0px;
+    margin-right: 100px;
+}
+
+#function1Label {
+  color: green;
+}
+
+#function2Label {
+  color: blue;
+}
+
+#F1_shift, #F2_shift {
+  margin-left: 15px;
+}
+
+.greyed {
+    border-style: solid;
+    background-color: #efede8 !important;
+}
+
+.notgreyed {
+    border-style: none;
+    background-color: white !important;
+}
+
+
+/*----- Tabs -----*/
+
+.tabs {
+    width: 95%;
+    display: block;
+    margin: auto;
+    border: 1px solid transparent;
+}
+
+
+/*----- Tab Links -----*/
+
+
+/* Clearfix */
+
+.tab-links:after {
+    display: block;
+    clear: both;
+    content: '';
+}
+
+.tab-links li {
+    margin: 0px 10px;
+    float: left;
+    list-style: none;
+}
+
+.tab-links {
+    margin-bottom: 0px;
+}
+
+.tab-links a {
+    padding: 9px 30px;
+    display: inline-block;
+    border-radius: 3px 3px 0px 0px;
+    background: #7FB5DA;
+    font-size: 16px;
+    font-weight: 600;
+    color: #4c4c4c;
+    transition: all linear 0.15s;
+}
+
+.tab-links a:hover {
+    background: #a7cce5;
+    text-decoration: none;
+}
+
+li.active a,
+li.active a:hover {
+    background: #fff;
+    color: #4c4c4c;
+}
+
+
+/*----- Content of Tabs -----*/
+
+.tab-content {
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15);
+    background: #fff;
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+#container {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+/* ----- audio convolution tab ----- */
+
+.inputcontainer {
+    flex-grow: 30;
+    flex-direction: column;
+}
+
+.inputbox {
+    padding: 1em;
+    margin: 5px;
+    border: 1px black;
+    border-radius: 3px;
+    box-shadow: -1px 1px 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.outputbox {
+    flex-grow: 70;
+    height: 100%;
+    padding: 1em;
+    border: 1px black;
+    border-radius: 3px;
+    box-shadow: -1px 1px 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+
+/************ Button styles ************/
+
+#convolveButtonContainer {
+    align-self: center;
+    flex-grow: 1;
+    padding: 5px;
+}
+
+input {
+    margin: 0.7em;
+}
+
+input[type="button"] {
+    background: #3498db;
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    -webkit-border-radius: 3;
+    -moz-border-radius: 3;
+    border-radius: 3px;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 6px;
+    text-decoration: none;
+    margin: 0px;
+}
+
+input[type="button"]:hover {
+    background: #3cb0fd;
+    background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+    background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+    text-decoration: none;
+}
+
+#convolveButton {
+    font-size: 18px;
+}
+
+audio {
+    vertical-align: bottom;
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Graphical Convolution Demonstrator & More</title>
+
+    <!-- JS Libraries -->
+    <script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			extensions: ["tex2jax.js"],
+			jax: ["input/TeX", "output/HTML-CSS"],
+			tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+		});
+	</script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <script type="text/javascript" src="js/libs/math.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/libs/jsxgraphcore.js" charset="utf-8"></script>
+
+    <!-- Custom JS Scripts -->
+    <script type="text/javascript" src="js/style.js"></script>
+    <script type="text/javascript" src="js/plots.js"></script>
+    <script type="text/javascript" src="js/math_functions.js"></script>
+    <script type="text/javascript" src="js/udf.js"></script>
+
+    <!-- Cascading Style Sheets -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/jsxgraph.css" />
+
+</head>
+
+<body>
+    <img src="haw_logo.png" id="haw_logo">
+    <h1>Web-based Convolution Demonstrator</h1>
+    <div class="tabs">
+        <ul class="tab-links">
+            <li class="active">
+                <a href="#tab1" class="active">Convolution graph</a>
+            </li>
+            <li >
+                <a href="#tab2">Audio Convolution</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="tab1" class="tab active">
+
+                <!-- User input area -->
+                <div id="formField" class="formField" align="top">
+
+                    <form>
+                        <fieldset>
+                            <legend>Functions</legend>
+                            <p>
+                                <label id="function1Label">Select Function 1:</label>
+                                <select id="functionList1" onchange="checkUdfSelected(); plot1(brd);">
+                                    <option value="1">Rectangle</option>
+                                    <option value="2">Triangle</option>
+                                    <option value="3">Gaussian</option>
+                                    <option value="4">Sinc</option>
+                                    <option value="5">Step</option>
+                                    <option value="6">Dirac</option>
+                                    <option value="7">Dirac Train</option>
+                                    <option value="8">Decreasing exponential</option>
+                                    <option id="opdlUDF" value="9">User defined</option>
+                                </select>
+                                <br>
+
+
+                                <!-- Function 1 Width -->
+                                <label id="f1Text1Label" for="F1_width">Function 1 Width:</label>
+                                <input type="text" id="F1_width" size="4" value="1" onchange="plot1(brd)" />
+                                <br> 
+								<label id="f1Text1Label" for="F1_width">Function 1 Shift        :</label>
+                                <input type="text" id="F1_shift" size="4" value="0" onchange="plot1(brd)" />
+                                <br>
+                            </p>
+
+                            <p>
+                                <label id="function2Label">Select Function 2:</label>
+
+                                <select id="functionList2" onchange="plot2(brd)">
+                                    <option value="2">Rectangle</option>
+                                    <option value="1">Triangle</option>
+                                    <option value="3">Gaussian</option>
+                                    <option value="4">Sinc</option>
+                                    <option value="6">Dirac</option>
+                                    <option value="7">Decreasing exponential</option>
+                                </select>
+                                <br>
+
+                                <label id="f2Text1Label" for="F2_width">Function 2 Width:</label>
+                                <input type="text" id="F2_width" size="4" value="1" onchange="plot2(brd)" />
+                                <br>
+								<label id="f2Text2Label" for="F2_width">Function 2 Shift         :</label>
+                                <input type="text" id="F2_shift" size="4" value="0" onchange="plot2(brd)" />
+                                <br>
+                            </p>
+							<p>
+								<input type ="checkbox" id="multiCheckBox" onchange="reDrawSignal2()"; checked = "checked"; return false;/>
+								<label for="multiCheckBox">Show Multiplication</label>
+							</p>
+                            <p>
+                                <input type="radio" id: "conv" name="actionRadios" onclick="doConvo(brd2);" checked="checked" />
+                                <label for="conv">Convolution</label>
+                                <br>
+                                <input type="radio" id: "corr" name="actionRadios" onclick="doCorrelation(brd2);" />
+                                <label for="corr">Correlation</label>
+                                <br>
+								<!-- <input type="radio" id: "mult" name="actionRadios" onclick="doMultiplication(brd2);" />
+                                <label for="mult">Multiplication</label> -->
+                                <br>
+                            </p>
+
+                            <!-- <p id ="sliderParagraph">
+							  <input type ="checkbox" id="slideCheckBox" onchange="reDrawSignal2(); return false;" />
+							  <label for="slideCheckBox">Show Graphically</label>
+							</p> -->
+
+                            <!-- User defined functions -->
+                            <div id="divUDF">
+                                <p>
+                                    <label id="lblUdfExpr" for="txtUserExpression">Your function: </label>
+                                    <br>
+                                    <br>
+                                    <input type="text" id="txtUserExpression" value="-0.3*(x^2) + 1/2" onchange="return updateUdfParsingReq()" />
+                                    <button id="btnUpdateUdf" onclick="return parseMathExpr(); plot1(brd);">Update</button>
+                                </p>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <!-- User input area ends ------------------------------------------------------------------------>
+
+                <!-- Create two JSXGRAPH boards to hold all the plots -->
+                <div id="boxGroup" class="boxGroup">
+
+                    <div id="jxgbox" class="jxgbox" style="width:600px; height:300px"></div>
+
+                    <script type="text/javascript">
+                        // The upper board goes from -4 to 4 on the X-axis and -1 to 2 on the Y-axis
+                        let brd = JXG.JSXGraph.initBoard('jxgbox', {
+                            boundingbox: [-4, 2, 4, -0.3], axis: true,
+                            showCopyright: false
+                        });
+                    </script>
+
+
+                    <div id="jxgbox2" class="jxgbox" style="width:600px; height:300px"></div>
+
+                    <script type="text/javascript">
+                        let previousCoordinateArray;
+                        let currentCoordinateArray;
+                        // The lower board goes from -4 to 4 on the X-axis and -1 to 2 on the Y-axis
+                        let brd2 = JXG.JSXGraph.initBoard('jxgbox2', {
+                            boundingbox: [-4, 2, 4, -1], axis: true,
+                            showCopyright: false
+                        });
+                        //-----------------------------------------------------------------------------------
+                        previousCoordinateArray = brd.getBoundingBox(); // get upper board coordinates
+                        // upper board zoom event handler
+                        brd.on('boundingbox', function () {
+                            currentCoordinateArray = brd.getBoundingBox(); // get upper board coordinates
+                            brd2.setBoundingBox(brd.getBoundingBox());
+                            // generate sample points for the 2 functions in the upper graph
+                            generateSamplePoints(currentCoordinateArray[0], currentCoordinateArray[2]);
+                            plot1(brd);
+                            plot2(brd);
+                            adjustSlider();
+                            previousCoordinateArray = currentCoordinateArray;
+                        });
+                        brd2.on('boundingbox', function () {
+                            currentCoordinateArray = brd2.getBoundingBox(); // get upper board coordinates
+                            brd.setBoundingBox(brd2.getBoundingBox());
+                            // generate sample points for the 2 functions in the upper graph
+                            generateSamplePoints(currentCoordinateArray[0], currentCoordinateArray[2]);
+                            plot1(brd);
+                            plot2(brd);
+                            adjustSlider();
+                            previousCoordinateArray = currentCoordinateArray;
+                        });
+                        // generate sample points for the 2 functions in the upper graph
+                        generateSamplePoints(previousCoordinateArray[0], previousCoordinateArray[2]);
+						
+						
+                        // Plot 2 functions (rect() and tri()) as start up case on the upper board
+                        start(brd, brd2); // plot pre-selected functions on start-up
+                        onPageLoadUdf(); // TODO: move this to page load f-n
+                    </script>
+                </div>
+            </div>
+
+            <!-- Audio convolution stuff -->
+            <div id="tab2" class="tab">
+                <div id="container">
+                    <div class="inputcontainer">
+                        <div class="inputbox">
+                            <h2>Input sound:</h2>
+                            <form>
+                                <input type="radio" name="audioInput" id="audioPresetRadio" checked> Select an audio example to try
+                                <select id="audioPreset">
+                                    <option value="" disabled selected style="display:none;">Select an audio example...</option>
+                                    <option value="theForce">The Force</option>
+                                    <option value="chime">Chime</option>
+                                </select>
+                                <br>
+                                <input type="radio" name="audioInput" id="ownAudioFile"> Choose a file from your computer to try:
+                                <input type="file" id="files" name="files[]" />
+                                <br>
+                            </form>
+                            <audio id="inputSound" controls controlsList="nodownload"></audio>
+                            <p>(Audio
+                                <a href="http://www.moviesoundclips.net/sound.php?id=219">source</a>)</p>
+                        </div>
+
+                        <div class="inputbox">
+                            <h2>Impulse response:</h2>
+                            <form>
+                                <input type="radio" name="impulseResponse" id="irPresetRadio" checked>Choose from presets
+                                <select id="irPresetList">
+                                    <option value="" disabled selected style="display:none;">Select an impulse response...</option>
+                                    <option value="carpark" title="Underground car park">Car park</option>
+                                    <option value="centre_stalls" title="Central Hall, University of York">Central Hall</option>
+                                    <option value="aula_carolina" title="Aula Carolina, RWTH Aachen">Aula Carolina</option>
+                                    <option value="corridor">Corridor</option>
+                                    <option value="meeting_room">Meeting room</option>
+                                    <option value="office">Office</option>
+                                    <option value="stairway">Stairway</option>
+
+                                </select>
+                                <br>
+                                <input type="radio" name="impulseResponse" id="ownIrFile">Choose an impulse response
+                                <input type="file" id="iFiles" name="files[]" />
+                                <br>
+                                <audio id="impulseResponse" controls controlsList="nodownload"></audio>
+                                <p>(Impuse responses courtesy of
+                                    <a href="https://www.iks.rwth-aachen.de/en/research/tools-downloads/databases/aachen-impulse-response-database/">RWTH Aachen</a> and
+                                    <a href="http://www.openairlib.net/">Open AIR Library</a>)</p>
+                                <br>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div id="convolveButtonContainer">
+                        <input type="button" id="convolveButton" value="Convolve" />
+                    </div>
+                    <div class="outputbox">
+                        <h2>Result:</h2>
+                        <audio id="outputSound" controls controlsList="nodownload"></audio>
+                        <input type="button" id="downloadButton" value="Download" />
+                        <p id="renderStatus"></p>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript" src="js/audio_conv.js"></script>
+            <!-- Audio convolution stuff ends -->
+        </div>
+        <!-- tab content -->
+    </div>
+    <!-- tabs -->
+
+</body>
+
+</html>
